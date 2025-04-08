@@ -1,0 +1,79 @@
+{
+  "project_info": {
+    "project_number": "629207620308",
+    "project_id": "khuru-on-mobile",
+    "storage_bucket": "khuru-on-mobile.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:629207620308:android:76cce34889a7dfc4633941",
+        "android_client_info": {
+          "package_name": "td.webuild.ksp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "629207620308-6bgv4gip38dml9jvvcr3m0qcviftkmp1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "td.webuild.ksp",
+            "certificate_hash": "c05c635117ddce9925447ac57e4cc6d76e3ed0fc"
+          }
+        },
+        {
+          "client_id": "629207620308-bslc9krmd3qfdfv61kuvo9k1509jepeh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "td.webuild.ksp",
+            "certificate_hash": "feb7f6fecc08344b4abfc2ae4c07a7e6b41bcc24"
+          }
+        },
+        {
+          "client_id": "629207620308-fpnl0fsp35a5ur99umn9lrgm1hopsrrt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "td.webuild.ksp",
+            "certificate_hash": "dc8b8e19ce2554ad18a9801cb8aa432c7f286b07"
+          }
+        },
+        {
+          "client_id": "629207620308-mu3ammdq11io3jv61f7os6pu7fopharg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "td.webuild.ksp",
+            "certificate_hash": "e540ca660a4a70569d484ec384f03e035bd0ad90"
+          }
+        },
+        {
+          "client_id": "629207620308-kbatia2gbjf5ksrksfavdhp4d73ntbgs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB96zApa8R0E1Y41vmzCwiNbR1EHvr98A0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "629207620308-kbatia2gbjf5ksrksfavdhp4d73ntbgs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "629207620308-umbk4lh0fm8j9di8db0efs9farcjkm8i.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "td.webuild.ksp",
+                "app_store_id": "1547401287"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
