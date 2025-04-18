@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_app_badge/flutter_app_badge.dart';
 import 'package:ksp/page/about_us/about_us_form.dart';
 import 'package:ksp/page/conference/conference_group_year.dart';
@@ -130,8 +131,10 @@ class _HomePageState extends State<HomePage>
           launchUrl(Uri.parse('tel://023049899'));
         },
       ),
-      body: WillPopScope(
-        onWillPop: confirmExit,
+      body: PopScope(
+        // onWillPop: confirmExit,
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) => confirmExit(),
         child: NotificationListener<OverscrollIndicatorNotification>(
           onNotification: (OverscrollIndicatorNotification overScroll) {
             return true;
@@ -142,7 +145,7 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  Future<bool> confirmExit() {
+  confirmExit() {
     DateTime now = DateTime.now();
     if (now.difference(currentBackPressTime) > Duration(seconds: 2)) {
       currentBackPressTime = now;
@@ -152,9 +155,11 @@ class _HomePageState extends State<HomePage>
         color: Colors.black,
         fontColor: Colors.white,
       );
-      return Future.value(false);
+      // return Future.value(false);
+    } else {
+      SystemNavigator.pop();
+      // return Future.value(true);
     }
-    return Future.value(true);
   }
 
   _buildBackground() {
