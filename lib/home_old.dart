@@ -13,7 +13,6 @@ import 'package:ksp/page/event_calendar/event_calendar_main.dart';
 import 'package:ksp/page/knowledge/knowledge_list.dart';
 import 'package:ksp/page/main_popup/dialog_main_popup.dart';
 import 'package:ksp/page/news/news_list.dart';
-import 'package:ksp/page/notification/notification_list.dart';
 import 'package:ksp/page/other/build_e_service.dart';
 import 'package:ksp/page/other/build_other_service.dart';
 import 'package:ksp/page/other/other_menu.dart';
@@ -29,7 +28,6 @@ import 'package:ksp/page/teachers_day/teachers_day_list.dart';
 import 'package:ksp/page/video/video_clips.dart';
 import 'package:ksp/page/privilege/privilege_special_list.dart';
 import 'package:ksp/page/question_and_answer/question_list.dart';
-import 'package:ksp/service_all.dart';
 import 'package:ksp/policy.dart';
 import 'package:ksp/shared/notification_service.dart';
 import 'package:ksp/widget/carousel.dart';
@@ -44,12 +42,12 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:ksp/shared/api_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class HomePage extends StatefulWidget {
+class HomeOldPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomeOldPageState createState() => _HomeOldPageState();
 }
 
-class _HomePageState extends State<HomePage>
+class _HomeOldPageState extends State<HomeOldPage>
     with TickerProviderStateMixin, WidgetsBindingObserver {
   final Completer<GoogleMapController> _mapController = Completer();
 
@@ -101,14 +99,12 @@ class _HomePageState extends State<HomePage>
   final RefreshController _refreshController = RefreshController(
     initialRefresh: false,
   );
-  int _selectedIndex = 0;
 
   late AnimationController animationController;
 
   @override
   void initState() {
     expanded = false;
-    currentBackPressTime = DateTime.now().subtract(Duration(days: 1));
     _read();
     super.initState();
     NotificationService.instance.start(context);
@@ -129,115 +125,21 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      floatingActionButton:
-          _selectedIndex == 0
-              ? InkWell(
-                child: Image.asset(
-                  'assets/images/icon_floatphone.png',
-                  height: 70,
-                ),
-                onTap: () {
-                  launchUrl(Uri.parse('tel://023049899'));
-                },
-              )
-              : null,
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(29),
-            topRight: Radius.circular(29),
-          ),
-          boxShadow: [
-            BoxShadow(color: Colors.black12, spreadRadius: 0, blurRadius: 10),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(29),
-            topRight: Radius.circular(29),
-          ),
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            currentIndex: _selectedIndex,
-            selectedItemColor: Colors.amber[900],
-            unselectedItemColor: Colors.grey,
-            onTap: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-              if (index == 0) {
-                _read();
-              } else if (index == 1) {
-                postTrackClick("ปฏิทินกิจกรรม");
-              } else if (index == 2) {
-                postTrackClick("แจ้งเตือน");
-              } else if (index == 3) {
-                postTrackClick("โปรโฟล์");
-              }
-            },
-            items: [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'หน้าแรก'),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.calendar_month_outlined),
-                label: 'ปฏิทินกิจกรรม',
-              ),
-              BottomNavigationBarItem(
-                icon: Stack(
-                  children: [
-                    Icon(Icons.notifications),
-                    if (notiCount > 0)
-                      Positioned(
-                        right: 0,
-                        top: 0,
-                        child: Container(
-                          padding: EdgeInsets.all(1),
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          constraints: BoxConstraints(
-                            minWidth: 12,
-                            minHeight: 12,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-                label: 'แจ้งเตือน',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'โปรไฟล์',
-              ),
-            ],
-          ),
-        ),
+      floatingActionButton: InkWell(
+        child: Image.asset('assets/images/icon_floatphone.png', height: 70),
+        onTap: () {
+          launchUrl(Uri.parse('tel://023049899'));
+        },
       ),
       body: PopScope(
         // onWillPop: confirmExit,
         canPop: false,
-        onPopInvokedWithResult: (didPop, result) {
-          if (_selectedIndex != 0) {
-            setState(() {
-              _selectedIndex = 0;
-            });
-          } else {
-            confirmExit();
-          }
-        },
-        child: IndexedStack(
-          index: _selectedIndex,
-          children: [
-            NotificationListener<OverscrollIndicatorNotification>(
-              onNotification: (OverscrollIndicatorNotification overScroll) {
-                return true;
-              },
-              child: _buildBackground(),
-            ),
-            EventCalendarMain(title: 'ปฏิทินกิจกรรม'),
-            NotificationList(title: 'แจ้งเตือน'),
-            UserInformationPage(),
-          ],
+        onPopInvokedWithResult: (didPop, result) => confirmExit(),
+        child: NotificationListener<OverscrollIndicatorNotification>(
+          onNotification: (OverscrollIndicatorNotification overScroll) {
+            return true;
+          },
+          child: _buildBackground(),
         ),
       ),
     );
@@ -293,376 +195,347 @@ class _HomePageState extends State<HomePage>
         physics: ClampingScrollPhysics(),
         children: [
           _buildHeader(),
-          SizedBox(height: 16),
-          _buildBanner(),
-          SizedBox(height: 16),
-          _buildServiceSection(),
-          SizedBox(height: 16),
+          SizedBox(height: 10),
+          _buildRotation(),
+          SizedBox(height: 20),
           _buildListMenu(),
-          SizedBox(height: 80), // เผื่อพื้นที่ด้านล่าง
+          SizedBox(height: 20.0),
+          BuildPrivilege(
+            title: 'สิทธิประโยชน์สำหรับสมาชิก',
+            model: _futureOtherbenfit,
+            onError: () {},
+          ),
+          SizedBox(height: 20),
+          _buildContact(),
+          SizedBox(height: 100.0 + MediaQuery.of(context).padding.bottom),
         ],
       ),
     );
   }
 
   _buildHeader() {
-    return FutureBuilder<dynamic>(
-      future: _futureProfile,
-      builder: (context, snapshot) {
-        var profile = snapshot.data;
-        var imageUrl = profile != null ? (profile['imageUrl'] ?? '') : '';
-        var prefix = profile != null ? (profile['prefixTh'] ?? '') : '';
-        var firstName =
-            profile != null
-                ? (profile['firstName'] ?? 'ยินดีต้อนรับ')
-                : 'ยินดีต้อนรับ';
-        var lastName = profile != null ? (profile['lastName'] ?? '') : '';
-        var position =
-            profile != null
-                ? (profile['iskspCategory'] ?? 'สมาชิกคุรุสภา')
-                : 'บุคคลทั่วไป';
-
-        return Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xFFFF9800), Color(0xFFE65100)],
-            ),
+    return Container(
+      height: 520,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image:
+              isKspCategory != ""
+                  ? AssetImage("assets/background/new_bgactive.png")
+                  : AssetImage("assets/background/new_bgnoactive.png"),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Column(
+        children: [
+          headerV2(
+            context,
+            isCenter: false,
+            notiCount: notiCount,
+            callBackClickButtonCalendar: () => _read(),
           ),
-          child: Column(
+          SizedBox(height: 15),
+          _buildProfile(),
+          SizedBox(height: 10),
+          Row(
+            mainAxisSize: MainAxisSize.max,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 50,
-                  left: 20,
-                  right: 20,
-                  bottom: 20,
-                ),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Colors.white,
-                      backgroundImage:
-                          (imageUrl != null && imageUrl != '')
-                              ? NetworkImage(imageUrl)
-                              : null,
-                      child:
-                          (imageUrl == null || imageUrl == '')
-                              ? Icon(Icons.person, size: 30, color: Colors.grey)
-                              : null,
+              InkWell(
+                onTap: () {
+                  postTrackClick("สถาบันผลิตครูที่คุรุสภารับรอง");
+                  launchUrl(
+                    Uri.parse('https://www.ksp.or.th/ksp2018/cert-stdksp/'),
+                  );
+                },
+                child: Container(
+                  // padding: EdgeInsets.symmetric(horizontal: 5),
+                  width: (MediaQuery.of(context).size.width / 100) * 50,
+                  height: (MediaQuery.of(context).size.height / 100) * 12,
+                  child: ClipRRect(
+                    child: Image.asset(
+                      "assets/top_menu1.png",
+                      fit: BoxFit.fill,
                     ),
-                    const SizedBox(width: 15),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "$prefix $firstName $lastName",
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Kanit',
-                            ),
-                          ),
-                          Text(
-                            "$position",
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontFamily: 'Kanit',
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder:
-                                (context) => TeacherForm(
-                                  title: 'ข้อมูลใบอนุญาต',
-                                  profileCode: profileCode,
-                                ),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          children: const [
-                            Icon(Icons.badge_outlined, color: Colors.black87),
-                            Text(
-                              "ตรวจสอบใบอนุญาต",
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Kanit',
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-              Container(
-                height: 30,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
+              InkWell(
+                onTap: () {
+                  postTrackClick("สถาบันผลิตครูที่คุรุสภารับรอง");
+                  launchUrl(
+                    Uri.parse('https://www.ksp.or.th/ksp2018/cert-stdksp/'),
+                  );
+                },
+                child: Container(
+                  // padding: EdgeInsets.symmetric(horizontal: 5),
+                  width: (MediaQuery.of(context).size.width / 100) * 50,
+                  height: (MediaQuery.of(context).size.height / 100) * 12,
+                  child: ClipRRect(
+                    child: Image.asset(
+                      "assets/top_menu2.png",
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
               ),
             ],
           ),
-        );
-      },
-    );
-  }
-
-  _buildBanner() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16),
-      height: 180,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 10,
-            offset: Offset(0, 5),
-          ),
+          SizedBox(height: 10),
+          _buildListBottomMenu(),
         ],
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: CarouselBannerDotStack(
-          model: _futureRotation,
-          onTap: (
-            String path,
-            String action,
-            dynamic model,
-            String code,
-            String urlGallery,
-          ) async {
-            postTrackClick("แบนเนอร์");
-            if (action == 'out') {
-              if (!await launchUrl(
-                Uri.parse(path),
-                mode: LaunchMode.externalApplication,
-              )) {
-                throw 'Could not launch $path';
-              }
-            } else if (action == 'in') {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (context) => CarouselForm(
-                        code: code,
-                        model: model,
-                        url: '${mainRotationApi}read',
-                        urlGallery: bannerGalleryApi,
-                      ),
-                ),
-              );
-            } else if (action == 'conRef') {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ConferenceGroupYearPage(),
-                ),
-              );
-            } else if (action.toLowerCase() == 'teachersdayref') {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => TeachersDayList(title: 'วันครู'),
-                ),
-              );
-            } else if (action.toUpperCase() == 'P') {
-              postDio('${server}m/Rotation/innserlog', model);
-              _callReadPolicyPrivilegeAtoZ(code);
-            }
-          },
-        ),
-      ),
     );
   }
 
-  Widget _buildServiceSection() {
-    final List<Map<String, dynamic>> services = [
-      {
-        'title': 'KSP Service',
-        'img': 'assets/menu/menu_service.png',
-        'onTap': () {
-          postTrackClick("KSP Self-service");
-          launchUrl(
-            Uri.parse('https://www.ksp.or.th/ksp2018/ksp-selfservice/'),
-          );
-        },
-      },
-      {
-        'title': 'KSP School',
-        'img': 'assets/menu/menu_school.png',
-        'onTap': () {
-          postTrackClick("KSP School");
-          launchUrl(Uri.parse('https://www.ksp.or.th/ksp2018/ksp-school/'));
-        },
-      },
-      {
-        'title': 'KSP Bundit',
-        'img': 'assets/menu/menu_bandit.png',
-        'onTap': () {
-          postTrackClick("KSP Bundit");
-          launchUrl(Uri.parse('https://www.ksp.or.th/ksp2018/uni-bundit/'));
-        },
-      },
-      {
-        'title': 'ค้นหาผู้ได้รับ\nรางวัลคุรุสภา',
-        'img': 'assets/menu/menu_reward.png',
-        'onTap': () {
-          postTrackClick("ค้นหาผู้ได้รับรางวัลคุรุสภา");
-          launchUrl(
-            Uri.parse('https://www.ksp.or.th/service/check_reward.php'),
-          );
-        },
-      },
-      {
-        'title': 'สถาบันผลิตครูที่\nคุรุสภารับรอง',
-        'img': 'assets/menu/menu_tt.png',
-        'onTap': () {
-          postTrackClick("สถาบันผลิตครูที่คุรุสภารับรอง");
-          launchUrl(Uri.parse('https://www.ksp.or.th/ksp2018/cert-stdksp/'));
-        },
-      },
-      {
-        'title': 'สิทธิพิเศษ',
-        'img': 'assets/menu/menu_privileges.png',
-        'onTap': () {
-          postTrackClick("สิทธิพิเศษ");
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PrivilegeSpecialList(title: 'สิทธิพิเศษ'),
-            ),
-          );
-        },
-      },
-    ];
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
+  _buildListBottomMenu() {
+    return Container(
+      height: 180,
+      width: double.infinity,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "บริการ",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Kanit',
+          SizedBox(width: 10),
+          InkWell(
+            onTap: () {
+              postTrackClick("KSP Self-service");
+              // launchInWebViewWithJavaScript
+              launchUrl(
+                Uri.parse('https://www.ksp.or.th/ksp2018/ksp-selfservice/'),
+              );
+            },
+            child: Container(
+              height: 180,
+              width: (MediaQuery.of(context).size.width / 100) * 45,
+              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/bot_menu1.png"),
+                  fit: BoxFit.fill,
                 ),
               ),
-              InkWell(
+              child: Column(
+                children: [
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: Image.asset(
+                      'assets/images/bot_icon1.png',
+                      width: 60,
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.bottomCenter,
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        'KSP Service',
+                        style: TextStyle(
+                          fontFamily: 'Kanit',
+                          fontSize: 20,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(width: 15),
+          Column(
+            children: [
+              _buildBottomMenu(
+                title: 'ขั้้นตอนการใช้งาน',
+                title2: 'E - Service',
+                bgimage: 'assets/images/bot_menu2.png',
+                image: 'assets/images/bot_icon2.png',
                 onTap: () {
+                  postTrackClick("ขั้นตอนการใช้งาน E-Service");
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder:
-                          (context) => ServiceAllPage(
-                            profileCode: profileCode,
-                            futureAboutUs: _futureAboutUs,
+                          (context) => BuildListEService(
+                            title: 'ขั้นตอนการใช้งาน E-Service',
                           ),
                     ),
                   );
                 },
-                child: Text(
-                  "ดูทั้งหมด >",
-                  style: TextStyle(color: Colors.grey, fontFamily: 'Kanit'),
-                ),
+              ),
+              SizedBox(height: 10),
+              _buildBottomMenu(
+                title: 'KSP School',
+                title2: '',
+                bgimage: 'assets/images/bot_menu3.png',
+                image: 'assets/images/bot_icon3.png',
+                onTap: () {
+                  postTrackClick("KSP School");
+                  launchUrl(
+                    Uri.parse('https://www.ksp.or.th/ksp2018/ksp-school/'),
+                  );
+                },
               ),
             ],
           ),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.only(top: 10),
-            itemCount: services.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              childAspectRatio: 0.85,
-            ),
-            itemBuilder: (context, index) {
-              return _buildServiceCard(
-                services[index]['title'],
-                services[index]['img'],
-                onTap: services[index]['onTap'],
-              );
-            },
+          SizedBox(width: 5),
+          Column(
+            children: [
+              _buildBottomMenu(
+                title: 'KSP Bundit',
+                title2: '',
+                bgimage: 'assets/images/bot_menu4.png',
+                image: 'assets/images/bot_icon4.png',
+                onTap: () {
+                  postTrackClick("KSP Bundit");
+                  launchUrl(
+                    Uri.parse('https://www.ksp.or.th/ksp2018/uni-bundit/'),
+                  );
+                },
+              ),
+              SizedBox(height: 10),
+              _buildBottomMenu(
+                title: 'ตรวจสอบข้อมูล',
+                title2: 'ใบอนุญาต',
+                bgimage: 'assets/images/bot_menu5.png',
+                image: 'assets/images/bot_icon5.png',
+                onTap: () {
+                  postTrackClick("ข้อมูลใบอนุญาต");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) => TeacherForm(
+                            title: 'ข้อมูลใบอนุญาต',
+                            profileCode: profileCode,
+                          ),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
+          SizedBox(width: 5),
+          Column(
+            children: [
+              _buildBottomMenu(
+                title: 'ค้นหาผู้ได้รับ',
+                title2: 'รางวัลคุรุสภา',
+                bgimage: 'assets/images/bot_menu6.png',
+                image: 'assets/images/bot_icon6.png',
+                onTap: () {
+                  postTrackClick("ค้นหาผู้ได้รับรางวัลคุรุสภา");
+                  launchUrl(
+                    Uri.parse('https://www.ksp.or.th/service/check_reward.php'),
+                  );
+                },
+              ),
+              SizedBox(height: 10),
+              _buildBottomMenu(
+                title: 'สถาบันผลิตครูที่',
+                title2: 'คุรุสภารับรอง',
+                bgimage: 'assets/images/bot_menu7.png',
+                image: 'assets/images/bot_icon7.png',
+                onTap: () {
+                  postTrackClick("สถาบันผลิตครูที่คุรุสภารับรอง");
+                  launchUrl(
+                    Uri.parse('https://www.ksp.or.th/ksp2018/cert-stdksp/'),
+                  );
+                },
+              ),
+            ],
+          ),
+          SizedBox(width: 5),
+          Column(
+            children: [
+              _buildBottomMenu(
+                title: 'บริการอื่นๆ',
+                title2: '',
+                bgimage: 'assets/images/bot_menu8.png',
+                image: 'assets/images/bot_icon8.png',
+                onTap: () {
+                  postTrackClick("บริการอื่นๆ");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:
+                          (context) =>
+                              BuildListOtherService(title: 'บริการอื่นๆ'),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 10),
+            ],
+          ),
+          SizedBox(width: 10),
         ],
       ),
     );
   }
 
-  Widget _buildServiceCard(String title, String imageUrl, {Function? onTap}) {
+  _buildBottomMenu({
+    String title = '',
+    String title2 = '',
+    String image = '',
+    String bgimage = '',
+    required Function onTap,
+  }) {
     return InkWell(
       onTap: () {
-        if (onTap != null) onTap();
+        onTap();
       },
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: Image.asset(
-              imageUrl,
-              fit: BoxFit.fill,
-              width: double.infinity,
+      child: Container(
+        height: 85,
+        width: (MediaQuery.of(context).size.width / 100) * 45,
+        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+        decoration: BoxDecoration(
+          image: DecorationImage(image: AssetImage(bgimage), fit: BoxFit.fill),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              alignment: Alignment.topLeft,
+              child: Image.asset(image, width: 55),
             ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              width: double.infinity,
-              height: 35,
-              color: const Color(0xFFF57F20),
-              alignment: Alignment.center,
-              child: Text(
-                title,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: 'Kanit',
+            title2 != ''
+                ? Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Container(
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                          fontFamily: 'Kanit',
+                          fontSize: 13,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        title2,
+                        style: TextStyle(
+                          fontFamily: 'Kanit',
+                          fontSize: 13,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+                : Container(
+                  alignment: Alignment.bottomRight,
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontFamily: 'Kanit',
+                      fontSize: 13,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -731,28 +604,6 @@ class _HomePageState extends State<HomePage>
   }
 
   _buildButtonMenu(dynamic model, String size) {
-    double width;
-    double rightPos = 0;
-    double topPos = 0;
-    double imageWidth;
-
-    if (size == 'l') {
-      width = MediaQuery.of(context).size.width;
-      rightPos = 12;
-      topPos = 2;
-      imageWidth = width - 24;
-    } else if (size == 'm') {
-      width = (MediaQuery.of(context).size.width / 100) * 55;
-      rightPos = 0;
-      topPos = 0;
-      imageWidth = width;
-    } else {
-      width = (MediaQuery.of(context).size.width / 100) * 35;
-      rightPos = 0;
-      topPos = 0;
-      imageWidth = width;
-    }
-
     return Stack(
       children: <Widget>[
         InkWell(
@@ -931,54 +782,67 @@ class _HomePageState extends State<HomePage>
               default:
             }
           },
-          child: Container(
-            margin: size == 'l' ? EdgeInsets.symmetric(horizontal: 10) : null,
-            padding: size == 'l' ? EdgeInsets.all(2) : null,
-            width: width,
-            height: (MediaQuery.of(context).size.height / 100) * 15,
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  spreadRadius: 0,
-                  blurRadius: 7,
-                  offset: Offset(0, 3),
-                  color: Color(0xFFAFA9A9),
-                ),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(15.0),
-              child: Image.network(model['imageUrl'], fit: BoxFit.fill),
-            ),
-          ),
-        ),
-        Positioned(
-          top: topPos,
-          right: rightPos,
-          child: Container(
-            width: imageWidth / 1.6,
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 15),
-            decoration: BoxDecoration(
-              color: Color(0xFFF57F20),
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                topRight: Radius.circular(15),
-              ),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              model['title'] ?? '',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 10,
-                fontFamily: 'Kanit',
-                fontWeight: FontWeight.w500,
-              ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-            ),
-          ),
+          child:
+              size == 'l'
+                  ? Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    padding: EdgeInsets.all(2),
+                    width: (MediaQuery.of(context).size.width),
+                    height: (MediaQuery.of(context).size.height / 100) * 15,
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          spreadRadius: 0,
+                          blurRadius: 7,
+                          offset: Offset(0, 3),
+                          color: Color(0xFFAFA9A9),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5.0),
+                      child: Image.network(model['imageUrl'], fit: BoxFit.fill),
+                    ),
+                  )
+                  : size == 'm'
+                  ? Container(
+                    // margin: EdgeInsets.symmetric(horizontal: 10),
+                    width: (MediaQuery.of(context).size.width / 100) * 55,
+                    height: (MediaQuery.of(context).size.height / 100) * 15,
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          spreadRadius: 0,
+                          blurRadius: 7,
+                          offset: Offset(0, 3),
+                          color: Color(0xFFAFA9A9),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5.0),
+                      child: Image.network(model['imageUrl'], fit: BoxFit.fill),
+                    ),
+                  )
+                  : Container(
+                    // margin: EdgeInsets.symmetric(horizontal: 10),
+                    width: (MediaQuery.of(context).size.width / 100) * 35,
+                    height: (MediaQuery.of(context).size.height / 100) * 15,
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          spreadRadius: 0,
+                          blurRadius: 7,
+                          offset: Offset(0, 3),
+                          color: Color(0xFFAFA9A9),
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5.0),
+                      child: Image.network(model['imageUrl'], fit: BoxFit.fill),
+                    ),
+                  ),
         ),
         Positioned(
           top: 5,
@@ -1008,6 +872,221 @@ class _HomePageState extends State<HomePage>
                   : Container(),
         ),
       ],
+    );
+  }
+
+  _buildContact() {
+    return Column(
+      children: [
+        Container(
+          alignment: Alignment.centerLeft,
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          child: Text(
+            'ติดต่อเรา',
+            style: TextStyle(
+              color: Color(0xFF000000),
+              fontWeight: FontWeight.w500,
+              fontSize: 15,
+              fontFamily: 'Kanit',
+            ),
+          ),
+        ),
+        SizedBox(height: 10),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          child: InkWell(
+            onTap: () {
+              postTrackClick("ติดต่อเรา");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (context) => AboutUsForm(
+                        model: _futureAboutUs,
+                        title: 'ติดต่อเรา',
+                      ),
+                ),
+              );
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buttonContact(
+                  imageUrl: 'assets/logo/icons/icon_facebook.png',
+                  onTap: () {
+                    launchUrl(Uri.parse('${_aboutUs['facebook']}'));
+                  },
+                ),
+                _buttonContact(
+                  imageUrl: 'assets/logo/icons/icon_youtube.png',
+                  onTap: () {
+                    launchUrl(Uri.parse('${_aboutUs['youtube']}'));
+                  },
+                ),
+                _buttonContact(
+                  imageUrl: 'assets/logo/icons/icon_instragram.png',
+                  onTap: () {
+                    launchUrl(Uri.parse('${_aboutUs['instagram']}'));
+                  },
+                ),
+                _buttonContact(
+                  imageUrl: 'assets/logo/icons/icon_line.png',
+                  onTap: () {
+                    launchURL('${_aboutUs['lineOfficial']}');
+                  },
+                ),
+                _buttonContact(
+                  imageUrl: 'assets/logo/icons/icon_phone.png',
+                  onTap: () {
+                    launchUrl(Uri.parse('tel://' + '${_aboutUs['telephone']}'));
+                  },
+                ),
+                _buttonContact(
+                  imageUrl: 'assets/logo/icons/icon_email.png',
+                  onTap: () {
+                    launchURL('mailto:' + '${_aboutUs['email']}');
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 20.0),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Container(
+            height: (MediaQuery.of(context).size.height / 100) * 25,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 6,
+                  offset: Offset(0, 3),
+                  color: Color(0xFFAFA9A9),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
+                  ),
+                  child: Container(
+                    // padding: EdgeInsets.symmetric(horizontal: 10),
+                    height: (MediaQuery.of(context).size.height / 100) * 15,
+                    width: double.infinity,
+                    child: googleMap(lat, lng),
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: Text(
+                        'สำนักงานเลขาคุรุสภา',
+                        style: TextStyle(
+                          color: Color(0xFF000000),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 15,
+                          fontFamily: 'Kanit',
+                        ),
+                      ),
+                    ),
+                    MaterialButton(
+                      minWidth: (MediaQuery.of(context).size.width / 100) * 15,
+                      onPressed: () {
+                        launchURLMap(lat.toString(), lng.toString());
+                      },
+                      child: Container(
+                        height: 35,
+                        width: 75,
+                        child: Image.asset(
+                          'assets/logo/icons/icon_navigate.png',
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  _buildProfile() {
+    return Profile(
+      model: _futureProfile,
+      nav: () {
+        postTrackClick("โปรโฟล์");
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder:
+                (context) => UserInformationPage(
+                  // userData: userData,
+                ),
+          ),
+        ).then((value) => _read());
+      },
+    );
+  }
+
+  _buildRotation() {
+    return CarouselBannerDotStack(
+      model: _futureRotation,
+      onTap: (
+        String path,
+        String action,
+        dynamic model,
+        String code,
+        String urlGallery,
+      ) async {
+        postTrackClick("แบนเนอร์");
+        if (action == 'out') {
+          if (!await launchUrl(
+            Uri.parse(path),
+            mode: LaunchMode.externalApplication,
+          )) {
+            throw 'Could not launch $path';
+          }
+        } else if (action == 'in') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder:
+                  (context) => CarouselForm(
+                    code: code,
+                    model: model,
+                    url: '${mainRotationApi}read',
+                    urlGallery: bannerGalleryApi,
+                  ),
+            ),
+          );
+        } else if (action == 'conRef') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ConferenceGroupYearPage()),
+          );
+        } else if (action.toLowerCase() == 'teachersdayref') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TeachersDayList(title: 'วันครู'),
+            ),
+          );
+        } else if (action.toUpperCase() == 'P') {
+          postDio('${server}m/Rotation/innserlog', model);
+          _callReadPolicyPrivilegeAtoZ(code);
+        }
+      },
     );
   }
 
@@ -1199,7 +1278,7 @@ class _HomePageState extends State<HomePage>
                 navTo: () {
                   // Navigator.pop(context);
                   Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => HomePage()),
+                    MaterialPageRoute(builder: (context) => HomeOldPage()),
                     (Route<dynamic> route) => false,
                   );
                 },
