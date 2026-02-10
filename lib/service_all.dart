@@ -40,7 +40,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
     services = [
       {
         'title': 'ตรวจสอบข้อมูลใบอนุญาต',
-        'img': 'assets/menu/menu_ksp.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_ksp.png',
         'onTap': () {
           postTrackClick("ข้อมูลใบอนุญาต");
           Navigator.push(
@@ -56,7 +56,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       },
       {
         'title': 'ปฏิทินกิจกรรม',
-        'img': 'assets/menu/menu_event.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_event.png',
         'onTap': () {
           postTrackClick("ปฏิทินกิจกรรม");
           Navigator.push(
@@ -69,7 +69,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       },
       {
         'title': 'ข่าวประชาสัมพันธ์',
-        'img': 'assets/menu/menu_new.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_new.png',
         'onTap': () {
           postTrackClick("ข่าวประชาสัมพันธ์");
           Navigator.push(
@@ -82,7 +82,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       },
       {
         'title': 'KSP Service',
-        'img': 'assets/menu/menu_service.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_service.png',
         'onTap': () {
           postTrackClick("KSP Self-service");
           launchUrl(
@@ -91,7 +91,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       },
       {
         'title': 'KSP School',
-        'img': 'assets/menu/menu_school.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_school.png',
         'onTap': () {
           postTrackClick("KSP School");
           launchUrl(Uri.parse('https://www.ksp.or.th/ksp2018/ksp-school/'));
@@ -99,7 +99,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       },
       {
         'title': 'KSP Bandit',
-        'img': 'assets/menu/menu_bandit.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_bandit.png',
         'onTap': () {
           postTrackClick("KSP Bundit");
           launchUrl(Uri.parse('https://www.ksp.or.th/ksp2018/uni-bundit/'));
@@ -107,7 +107,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       },
       {
         'title': 'สถาบันผลิตครูที่คุรุสภารับรอง',
-        'img': 'assets/menu/menu_tt.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_tt.png',
         'onTap': () {
           postTrackClick("สถาบันผลิตครูที่คุรุสภารับรอง");
           launchUrl(Uri.parse('https://www.ksp.or.th/ksp2018/cert-stdksp/'));
@@ -115,7 +115,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       },
       {
         'title': 'ค้นหาผู้ได้รับรางวัลคุรุสภา',
-        'img': 'assets/menu/menu_reward.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_reward.png',
         'onTap': () {
           postTrackClick("ค้นหาผู้ได้รับรางวัลคุรุสภา");
           launchUrl(
@@ -124,7 +124,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       },
       {
         'title': 'สารคุรุสภา',
-        'img': 'assets/menu/menu_kanowledge.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_kanowledge.png',
         'onTap': () {
           postTrackClick("สารคุรุสภา");
           Navigator.push(
@@ -137,7 +137,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       },
       {
         'title': 'สิทธิพิเศษ',
-        'img': 'assets/menu/menu_privileges.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_privileges.png',
         'onTap': () {
           postTrackClick("สิทธิพิเศษ");
           Navigator.push(
@@ -150,7 +150,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       },
       {
         'title': 'จรรยาบรรณวิชาชีพ',
-        'img': 'assets/menu/menu_ethics.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_ethics.png',
         'onTap': () {
           postTrackClick("จรรยาบรรณวิชาชีพ");
           Navigator.push(
@@ -163,7 +163,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       },
       {
         'title': 'คลิปคุรุสภา',
-        'img': 'assets/menu/menu_vdo.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_vdo.png',
         'onTap': () {
           postTrackClick("คลิปคุรุสภา");
           Navigator.push(
@@ -176,7 +176,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       },
       {
         'title': 'รับเรื่องร้องเรียน',
-        'img': 'assets/menu/menu_reporter.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_reporter.png',
         'onTap': () {
           postTrackClick("รับเรื่องร้องเรียน");
           Navigator.push(
@@ -190,7 +190,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       },
       {
         'title': 'หน่วยงานที่เกี่ยวข้อง',
-        'img': 'assets/menu/menu_ra.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_ra.png',
         'onTap': () {
           postTrackClick("หน่วยงานที่เกี่ยวข้อง");
           Navigator.push(
@@ -204,7 +204,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       },
       {
         'title': 'เบอร์เร่งด่วน',
-        'img': 'assets/menu/menu_contact.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_contact.png',
         'onTap': () {
           postTrackClick("เบอร์ติดต่อเร่งด่วน");
           Navigator.push(
@@ -218,7 +218,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       },
       {
         'title': 'แบบสอบถาม',
-        'img': 'assets/menu/menu_poll.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_poll.png',
         'onTap': () {
           postTrackClick("แบบสอบถาม");
           Navigator.push(
@@ -231,7 +231,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       },
       {
         'title': 'ถามตอบ',
-        'img': 'assets/menu/menu_qa.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_qa.png',
         'onTap': () {
           postTrackClick("ถาม - ตอบ");
           Navigator.push(
@@ -246,7 +246,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       },
       {
         'title': 'จุดน่าสนใจ',
-        'img': 'assets/menu/menu_poi.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_poi.png',
         'onTap': () {
           postTrackClick("จุดน่าสนใจ");
           Navigator.push(
@@ -259,7 +259,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       },
       // {
       //   'title': 'เกี่ยวกับเรา',
-      //   'img': 'assets/images/bot_icon1.png',
+      //   'img': 'http://ksp.we-builds.com/ksp-document/images/images/bot_icon1.png',
       //   'onTap': () {
       //     postTrackClick("เกี่ยวกับเรา");
       //     Navigator.push(
@@ -322,7 +322,7 @@ class _ServiceAllPageState extends State<ServiceAllPage> {
       child: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset(
+            child: Image.network(
               imageUrl,
               fit: BoxFit.fill,
               width: double.infinity,

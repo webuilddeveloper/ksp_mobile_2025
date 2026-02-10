@@ -509,7 +509,7 @@ class _HomePageState extends State<HomePage>
     final List<Map<String, dynamic>> services = [
       {
         'title': 'KSP Service',
-        'img': 'assets/menu/menu_service.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_service.png',
         'onTap': () {
           postTrackClick("KSP Self-service");
           launchUrl(
@@ -519,7 +519,7 @@ class _HomePageState extends State<HomePage>
       },
       {
         'title': 'KSP School',
-        'img': 'assets/menu/menu_school.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_school.png',
         'onTap': () {
           postTrackClick("KSP School");
           launchUrl(Uri.parse('https://www.ksp.or.th/ksp2018/ksp-school/'));
@@ -527,7 +527,7 @@ class _HomePageState extends State<HomePage>
       },
       {
         'title': 'KSP Bundit',
-        'img': 'assets/menu/menu_bandit.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_bandit.png',
         'onTap': () {
           postTrackClick("KSP Bundit");
           launchUrl(Uri.parse('https://www.ksp.or.th/ksp2018/uni-bundit/'));
@@ -535,7 +535,7 @@ class _HomePageState extends State<HomePage>
       },
       {
         'title': 'ค้นหาผู้ได้รับ\nรางวัลคุรุสภา',
-        'img': 'assets/menu/menu_reward.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_reward.png',
         'onTap': () {
           postTrackClick("ค้นหาผู้ได้รับรางวัลคุรุสภา");
           launchUrl(
@@ -545,7 +545,7 @@ class _HomePageState extends State<HomePage>
       },
       {
         'title': 'สถาบันผลิตครูที่\nคุรุสภารับรอง',
-        'img': 'assets/menu/menu_tt.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_tt.png',
         'onTap': () {
           postTrackClick("สถาบันผลิตครูที่คุรุสภารับรอง");
           launchUrl(Uri.parse('https://www.ksp.or.th/ksp2018/cert-stdksp/'));
@@ -553,7 +553,7 @@ class _HomePageState extends State<HomePage>
       },
       {
         'title': 'สิทธิพิเศษ',
-        'img': 'assets/menu/menu_privileges.png',
+        'img': 'http://ksp.we-builds.com/ksp-document/images/menu/menu_privileges.png',
         'onTap': () {
           postTrackClick("สิทธิพิเศษ");
           Navigator.push(
@@ -633,7 +633,7 @@ class _HomePageState extends State<HomePage>
       child: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset(
+            child: Image.network(
               imageUrl,
               fit: BoxFit.fill,
               width: double.infinity,
