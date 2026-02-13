@@ -16,14 +16,9 @@ header(
     flexibleSpace: Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        gradient: LinearGradient(
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-          colors: <Color>[Color(0xFFF58A33), Color(0xFFF5661F)],
-        ),
       ),
     ),
-    backgroundColor: Theme.of(context).primaryColor,
+    backgroundColor: Colors.white,
     elevation: 0.0,
     titleSpacing: 5,
     automaticallyImplyLeading: false,
@@ -34,17 +29,24 @@ header(
         fontSize: 15,
         fontWeight: FontWeight.bold,
         fontFamily: 'Kanit',
-        color: Colors.white,
+        color: Colors.black,
       ),
     ),
-    leading: InkWell(
-      onTap: () => functionGoBack(),
-      child: Container(
-        child: Image.asset(
-          "assets/images/arrow_left.png",
-          color: Colors.white,
+    leading: Center(
+      child: InkWell(
+        onTap: () => functionGoBack(),
+        child: Container(
           width: 40,
           height: 40,
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Color(0x4FFAB67F),
+            borderRadius: BorderRadius.circular(4),
+          ),
+          child: Image.asset(
+            "assets/images/arrow_left.png",
+            color: Color(0xFFE76800),
+          ),
         ),
       ),
     ),

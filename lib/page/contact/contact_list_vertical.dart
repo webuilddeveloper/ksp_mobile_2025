@@ -95,89 +95,105 @@ class _ContactListVertical extends State<ContactListVertical> {
                               alignment: Alignment.centerLeft,
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                                '${snapshot.data[index]['imageUrl']}'),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                        // color: Color(0xFF000070),
-                                        alignment: Alignment.centerLeft,
-                                        width: 55.0,
-                                        height: 55.0,
+                                  Container(
+                                    margin: EdgeInsets.only(right: 10),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            '${snapshot.data[index]['imageUrl']}'),
+                                        fit: BoxFit.cover,
                                       ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.55,
-                                            padding:
-                                                EdgeInsets.only(left: 10.0),
-                                            // color: Colors.red,
-                                            child: Text(
-                                              '${snapshot.data[index]['phone']}',
-                                              style: TextStyle(
-                                                  // fontWeight: FontWeight.normal,
-                                                  fontSize: 15,
-                                                  fontFamily: 'Kanit',
-                                                  color: Color(0xFFF58A33)),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.55,
-                                            padding:
-                                                EdgeInsets.only(left: 10.0),
-                                            // color: Colors.red,
-                                            child: Text(
-                                              '${snapshot.data[index]['title']}',
-                                              style: TextStyle(
-                                                // fontWeight: FontWeight.normal,
-                                                fontSize: 12.0,
-                                                fontFamily: 'Kanit',
-                                                color: Color.fromRGBO(
-                                                    0, 0, 0, 0.6),
-                                              ),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
+                                    ),
+                                    // color: Color(0xFF000070),
+                                    alignment: Alignment.centerLeft,
+                                    width: 55.0,
+                                    height: 55.0,
                                   ),
-                                  InkWell(
-                                    onTap: () {
-                                      _callReport(snapshot.data[index]);
-                                      _makePhoneCall(
-                                          snapshot.data[index]['phone']);
-                                    },
-                                    child: Container(
-                                      width: 50.00,
-                                      height: 50.00,
-                                      // color: Color(0xFFA12624),
-                                      padding: EdgeInsets.all(10.00),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(27),
-                                        color: Color(0xFFA12624),
-                                      ),
-                                      child: Image.asset(
-                                          'assets/images/phone.png'),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          '${snapshot.data[index]['title']}',
+                                          style: TextStyle(
+                                            fontSize: 13.0,
+                                            fontFamily: 'Kanit',
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        if (snapshot.data[index]['urlWeb'] !=
+                                                null &&
+                                            snapshot.data[index]['urlWeb'] !=
+                                                '')
+                                          _buildContactRow(
+                                            Icons.language,
+                                            snapshot.data[index]['titleWeb'] !=
+                                                        null &&
+                                                    snapshot.data[index]
+                                                            ['titleWeb'] !=
+                                                        ''
+                                                ? '${snapshot.data[index]['titleWeb']}'
+                                                : '${snapshot.data[index]['urlWeb']}',
+                                            () {
+                                              launchUrl(Uri.parse(snapshot
+                                                  .data[index]['urlWeb']));
+                                            },
+                                          ),
+                                        if (snapshot.data[index]
+                                                    ['urlFacebook'] !=
+                                                null &&
+                                            snapshot.data[index]
+                                                    ['urlFacebook'] !=
+                                                '')
+                                          _buildContactRow(
+                                            Icons.facebook,
+                                            snapshot.data[index][
+                                                        'titleFacebook'] !=
+                                                    null &&
+                                                snapshot.data[index][
+                                                        'titleFacebook'] !=
+                                                    ''
+                                                ? '${snapshot.data[index]['titleFacebook']}'
+                                                : '${snapshot.data[index]['urlFacebook']}',
+                                            () {
+                                              launchUrl(Uri.parse(snapshot
+                                                  .data[index]['urlFacebook']));
+                                            },
+                                          ),
+                                        if (snapshot.data[index]['phone'] !=
+                                                null &&
+                                            snapshot.data[index]['phone'] != '')
+                                          _buildContactRow(
+                                            Icons.phone,
+                                            '${snapshot.data[index]['phone']}',
+                                            () {
+                                              _callReport(snapshot.data[index]);
+                                              _makePhoneCall(snapshot
+                                                  .data[index]['phone']);
+                                            },
+                                          ),
+                                        if (snapshot.data[index]['email'] !=
+                                                null &&
+                                            snapshot.data[index]['email'] != '')
+                                          _buildContactRow(
+                                            Icons.email,
+                                            '${snapshot.data[index]['email']}',
+                                            () {
+                                              launchUrl(Uri.parse(
+                                                  'mailto:${snapshot.data[index]['email']}'));
+                                            },
+                                          ),
+                                      ],
                                     ),
                                   ),
                                 ],
@@ -196,6 +212,46 @@ class _ContactListVertical extends State<ContactListVertical> {
           return Container();
         }
       },
+    );
+  }
+
+  Widget _buildContactRow(IconData icon, String text, Function onTap) {
+    return Container(
+      padding: EdgeInsets.only(top: 5.0),
+      child: InkWell(
+        onTap: () {
+          onTap();
+        },
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                color: Color(0xFFF58A33),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                icon,
+                size: 10.0,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(width: 5),
+            Expanded(
+              child: Text(
+                text,
+                style: TextStyle(
+                  fontSize: 12.0,
+                  fontFamily: 'Kanit',
+                  color: Colors.black,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
