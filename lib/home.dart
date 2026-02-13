@@ -299,7 +299,15 @@ class _HomePageState extends State<HomePage>
           _buildServiceSection(),
           SizedBox(height: 16),
           _buildListMenu(),
-          SizedBox(height: 80), // เผื่อพื้นที่ด้านล่าง
+          SizedBox(height: 20.0),
+          BuildPrivilege(
+            title: 'สิทธิประโยชน์สำหรับสมาชิก',
+            model: _futureOtherbenfit,
+            onError: () {},
+          ),
+          SizedBox(height: 20),
+          _buildContact(),
+          SizedBox(height: MediaQuery.of(context).padding.bottom),
         ],
       ),
     );
@@ -1006,6 +1014,153 @@ class _HomePageState extends State<HomePage>
                     ),
                   )
                   : Container(),
+        ),
+      ],
+    );
+  }
+
+  _buildContact() {
+    if (_aboutUs == null) return Container();
+    return Column(
+      children: [
+        Container(
+          alignment: Alignment.centerLeft,
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          child: Text(
+            'ติดต่อเรา',
+            style: TextStyle(
+              color: Color(0xFF000000),
+              fontWeight: FontWeight.w500,
+              fontSize: 15,
+              fontFamily: 'Kanit',
+            ),
+          ),
+        ),
+        SizedBox(height: 10),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 15),
+          child: InkWell(
+            onTap: () {
+              postTrackClick("ติดต่อเรา");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder:
+                      (context) => AboutUsForm(
+                        model: _futureAboutUs,
+                        title: 'ติดต่อเรา',
+                      ),
+                ),
+              );
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buttonContact(
+                  imageUrl: 'assets/logo/icons/icon_facebook.png',
+                  onTap: () {
+                    launchUrl(Uri.parse('${_aboutUs['facebook']}'));
+                  },
+                ),
+                _buttonContact(
+                  imageUrl: 'assets/logo/icons/icon_youtube.png',
+                  onTap: () {
+                    launchUrl(Uri.parse('${_aboutUs['youtube']}'));
+                  },
+                ),
+                _buttonContact(
+                  imageUrl: 'assets/logo/icons/icon_instragram.png',
+                  onTap: () {
+                    launchUrl(Uri.parse('${_aboutUs['instagram']}'));
+                  },
+                ),
+                _buttonContact(
+                  imageUrl: 'assets/logo/icons/icon_line.png',
+                  onTap: () {
+                    launchURL('${_aboutUs['lineOfficial']}');
+                  },
+                ),
+                _buttonContact(
+                  imageUrl: 'assets/logo/icons/icon_phone.png',
+                  onTap: () {
+                    launchUrl(Uri.parse('tel://' + '${_aboutUs['telephone']}'));
+                  },
+                ),
+                _buttonContact(
+                  imageUrl: 'assets/logo/icons/icon_email.png',
+                  onTap: () {
+                    launchURL('mailto:' + '${_aboutUs['email']}');
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 20.0),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Container(
+            height: (MediaQuery.of(context).size.height / 100) * 25,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 6,
+                  offset: Offset(0, 3),
+                  color: Color(0xFFAFA9A9),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15),
+                  ),
+                  child: Container(
+                    // padding: EdgeInsets.symmetric(horizontal: 10),
+                    height: (MediaQuery.of(context).size.height / 100) * 15,
+                    width: double.infinity,
+                    child: googleMap(lat, lng),
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: Text(
+                        'สำนักงานเลขาคุรุสภา',
+                        style: TextStyle(
+                          color: Color(0xFF000000),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 15,
+                          fontFamily: 'Kanit',
+                        ),
+                      ),
+                    ),
+                    MaterialButton(
+                      minWidth: (MediaQuery.of(context).size.width / 100) * 15,
+                      onPressed: () {
+                        launchURLMap(lat.toString(), lng.toString());
+                      },
+                      child: Container(
+                        height: 35,
+                        width: 75,
+                        child: Image.asset(
+                          'assets/logo/icons/icon_navigate.png',
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ),
       ],
     );
