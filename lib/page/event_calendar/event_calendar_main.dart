@@ -43,6 +43,7 @@ class _EventCalendarMain extends State<EventCalendarMain> {
         appBar: headerCalendar(
           context,
           title: widget.title,
+          isShowBack: true,
           isCenter:true,
           isShowLogo: false,
           isShowButtonCalendar: true, // เพื่อให้โชว์ปุ่มขวาบน

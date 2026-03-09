@@ -289,7 +289,7 @@ class _TeacherForm extends State<TeacherForm> {
   }
 
   listLicense(dynamic model) {
-    final license = [];
+    final license = <Widget>[];
     if (model['license'].length > 0) {
       for (var i = 0; i < model['license'].length; i++) {
         license.add(
@@ -497,7 +497,7 @@ class _TeacherForm extends State<TeacherForm> {
   }
 
   listTeach(dynamic model) {
-    final teach = [];
+    final teach = <Widget>[];
     if (model['teach'].length > 0) {
       for (var i = 0; i < model['license'].length; i++) {
         teach.add(
@@ -684,7 +684,7 @@ class _TeacherForm extends State<TeacherForm> {
   }
 
   listAllow(dynamic model) {
-    final allow = [];
+    final allow = <Widget>[];
     if (model['allow'].length > 0) {
       for (var i = 0; i < model['license'].length; i++) {
         allow.add(

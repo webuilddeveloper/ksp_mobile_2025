@@ -49,7 +49,7 @@ class _UserInformationPageState extends State<UserInformationPage> {
         }
       },
       child: Scaffold(
-        appBar: header(context, _goBack, title: 'โปรไฟล์'),
+        appBar: header(context, null, title: 'โปรไฟล์'),
         backgroundColor: Color(0XFFFACBA4),
         body: FutureBuilder<dynamic>(
           future: _futureProfile,

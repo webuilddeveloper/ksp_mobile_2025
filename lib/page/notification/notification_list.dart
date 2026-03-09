@@ -330,7 +330,8 @@ class _NotificationList extends State<NotificationList>
         backgroundColor: Colors.white,
         appBar: headerNoti(
           context,
-          () => goBack(),
+          // () => goBack(),
+          null,
           title: widget.title,
           isButtonRight: true,
           rightButton: () => _handleClickMe(),

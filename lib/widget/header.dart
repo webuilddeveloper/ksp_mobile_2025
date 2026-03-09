@@ -5,7 +5,7 @@ import 'package:badges/badges.dart' as badges;
 
 header(
   BuildContext context,
-  Function functionGoBack, {
+  Function? functionGoBack, {
   String title = '',
   bool isButtonRight = false,
   Function? rightButton,
@@ -13,11 +13,7 @@ header(
 }) {
   return AppBar(
     centerTitle: true,
-    flexibleSpace: Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-      ),
-    ),
+    flexibleSpace: Container(decoration: BoxDecoration(color: Colors.white)),
     backgroundColor: Colors.white,
     elevation: 0.0,
     titleSpacing: 5,
@@ -32,24 +28,27 @@ header(
         color: Colors.black,
       ),
     ),
-    leading: Center(
-      child: InkWell(
-        onTap: () => functionGoBack(),
-        child: Container(
-          width: 40,
-          height: 40,
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Color(0x4FFAB67F),
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Image.asset(
-            "assets/images/arrow_left.png",
-            color: Color(0xFFE76800),
-          ),
-        ),
-      ),
-    ),
+    leading:
+        functionGoBack == null
+            ? null
+            : Center(
+              child: InkWell(
+                onTap: () => functionGoBack(),
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Color(0x4FFAB67F),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Image.asset(
+                    "assets/images/arrow_left.png",
+                    color: Color(0xFFE76800),
+                  ),
+                ),
+              ),
+            ),
     actions: <Widget>[
       isButtonRight == true
           ? menu == 'notification'
@@ -158,6 +157,7 @@ headerCalendar(
   bool isShowButtonPoi = false,
   bool isButtonPoi = false,
   bool isNoti = false,
+  bool isShowBack = true,
   int notiCount = 0,
   required Function callBackClickButtonCalendar,
 }) {
@@ -166,15 +166,18 @@ headerCalendar(
     centerTitle: isCenter,
     elevation: 0.0,
     flexibleSpace: Container(),
-    leading: IconButton(
-      icon: Icon(
-        Icons.arrow_back,
-        color: Colors.white, // เปลี่ยนสีลูกศรที่นี่
-      ),
-      onPressed: () {
-        Navigator.of(context).pop(); // ใช้สำหรับการย้อนกลับ
-      },
-    ),
+    leading:
+        isShowBack
+            ? null
+            : IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Colors.white, // เปลี่ยนสีลูกศรที่นี่
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(); // ใช้สำหรับการย้อนกลับ
+              },
+            ),
     title:
         isCenter
             ? isShowButtonCalendar || isShowButtonPoi
@@ -381,7 +384,7 @@ headerCalendar(
 
 headerNoti(
   BuildContext context,
-  Function functionGoBack, {
+  Function? functionGoBack, {
   String title = '',
   bool isButtonRight = false,
   required Function rightButton,
@@ -397,17 +400,18 @@ headerNoti(
     automaticallyImplyLeading: false,
     title: Row(
       children: [
-        InkWell(
-          onTap: () => functionGoBack(),
-          child: Container(
-            child: Image.asset(
-              "assets/images/arrow_left.png",
-              color: Color(0xFFFF9300),
-              width: 35,
-              height: 50,
+        if (functionGoBack != null)
+          InkWell(
+            onTap: () => functionGoBack(),
+            child: Container(
+              child: Image.asset(
+                "assets/images/arrow_left.png",
+                color: Color(0xFFFF9300),
+                width: 35,
+                height: 50,
+              ),
             ),
           ),
-        ),
         // SizedBox(width: 15),
         Text(
           title,
