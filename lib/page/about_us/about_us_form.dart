@@ -21,7 +21,6 @@ class AboutUsForm extends StatefulWidget {
 
 class _AboutUsForm extends State<AboutUsForm> {
   // final Set<Marker> _markers = {};
-  Completer<GoogleMapController> _mapController = Completer();
 
   @override
   void initState() {
@@ -593,7 +592,7 @@ class _AboutUsForm extends State<AboutUsForm> {
 
   googleMap(double lat, double lng) {
     return GoogleMap(
-      myLocationEnabled: true,
+      myLocationEnabled: false,
       compassEnabled: true,
       tiltGesturesEnabled: false,
       mapType: MapType.normal,
@@ -604,9 +603,7 @@ class _AboutUsForm extends State<AboutUsForm> {
               () => new EagerGestureRecognizer(),
             ),
           ].toSet(),
-      onMapCreated: (GoogleMapController controller) {
-        _mapController.complete(controller);
-      },
+      onMapCreated: (GoogleMapController controller) {},
       // onTap: _handleTap,
       markers:
           <Marker>[

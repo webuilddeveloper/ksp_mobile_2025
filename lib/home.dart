@@ -51,7 +51,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with TickerProviderStateMixin, WidgetsBindingObserver {
-  final Completer<GoogleMapController> _mapController = Completer();
 
   void launchURLMap(String lat, String lng) async {
     String homeLat = lat;
@@ -1423,7 +1422,7 @@ class _HomePageState extends State<HomePage>
 
   googleMap(double lat, double lng) {
     return GoogleMap(
-      myLocationEnabled: true,
+      myLocationEnabled: false,
       compassEnabled: true,
       tiltGesturesEnabled: false,
       mapType: MapType.normal,
@@ -1431,9 +1430,7 @@ class _HomePageState extends State<HomePage>
       gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
         Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()),
       },
-      onMapCreated: (GoogleMapController controller) {
-        _mapController.complete(controller);
-      },
+      onMapCreated: (GoogleMapController controller) {},
       markers: <Marker>{
         Marker(
           markerId: MarkerId('1'),
